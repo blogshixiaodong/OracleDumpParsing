@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://code.alibabatech.com/schema/dubbo
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+  		
+	<dubbo:reference id="com.bosssoft.platform.reference.appframe.api.service.ApplicationService" check="false" interface="com.bosssoft.platform.appframe.api.service.ApplicationService" />
+
+	<dubbo:reference id="com.bosssoft.platform.reference.appframe.api.service.PlatformDataSynchService" check="false" interface="com.bosssoft.platform.appframe.api.service.PlatformDataSynchService" />
+	
+	<dubbo:reference id="com.bosssoft.platform.reference.appframe.api.service.AuthPartyService" check="false" interface="com.bosssoft.platform.appframe.api.service.AuthPartyService" />
+	   
+	<dubbo:reference id="com.bosssoft.platform.reference.appframe.api.service.MenuService"  check="false" interface="com.bosssoft.platform.appframe.api.service.MenuService"/>
+	   
+	<dubbo:reference id="com.bosssoft.platform.reference.appframe.api.service.OrgService"  check="false" interface="com.bosssoft.platform.appframe.api.service.OrgService"/>
+	   
+	<dubbo:reference id="com.bosssoft.platform.reference.appframe.api.service.PositionService"  check="false" interface="com.bosssoft.platform.appframe.api.service.PositionService"/>
+	
+	<dubbo:reference id="com.bosssoft.platform.reference.appframe.api.service.RoleService"  check="false" interface="com.bosssoft.platform.appframe.api.service.RoleService"/>
+	
+	<dubbo:reference id="com.bosssoft.platform.reference.appframe.api.service.UserService"  check="false" interface="com.bosssoft.platform.appframe.api.service.UserService"/>
+	
+	<dubbo:reference id="com.bosssoft.platform.reference.appframe.api.service.LoginLogService"  check="false" interface="com.bosssoft.platform.appframe.api.service.LoginLogService"/>
+	
+	<dubbo:reference id="com.bosssoft.platform.reference.appframe.api.service.PortletService"  check="false" interface="com.bosssoft.platform.appframe.api.service.PortletService"/>
+
+	<dubbo:reference id="com.bosssoft.platform.reference.shiro.spi.UserAttributeInitializer" check="false" interface="com.bosssoft.platform.shiro.spi.UserAttributeInitializer"/>
+	
+	<dubbo:reference id="com.bosssoft.platform.reference.appframe.api.service.UserCertUpdateService"  check="false" interface="com.bosssoft.platform.appframe.api.service.UserCertUpdateService"/>
+
+	<dubbo:reference id="com.bosssoft.platform.reference.appframe.api.service.UserPwdLogService"  check="false" interface="com.bosssoft.platform.appframe.api.service.UserPwdLogService"/>
+
+	<dubbo:reference id="com.bosssoft.platform.reference.appframe.api.service.PlatformDataSyncService" check="false" interface="com.bosssoft.platform.appframe.api.service.PlatformDataSyncService" />
+
+</beans>
