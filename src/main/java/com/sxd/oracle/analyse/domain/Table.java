@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author shixiaodong
  * @version 1.0.0
- * @Description TODO
+ * @Description 表定义
  * @createTime 2020年04月21日 14:33:00
  */
 public class Table {
@@ -56,23 +56,19 @@ public class Table {
         this.rows = rows;
         // 设置数据后就开始解析
         // 时间类型，BLOB类型
-        List<String> columnList = insertStruct.getColumnList();
-        if (rows.size() != columnList.size()) {
-            System.out.println("解析异常");
-        }
-        List<String> columnType = new ArrayList<String>(columnList.size());
-        for (int i = 0; i < rows.size(); i++) {
-            for (int j = 0; j < columnList.size(); j++) {
-                Column column = rows.get(i).getColumn(j);
-                column.setName(columnList.get(j));
-                column.setType(getColumnType(columnList.get(j)));
-                column.setDecode(decodeColunm(column.getValue(), column.getType()));
-            }
-        }
-    }
-
-    public String getColumnType(String columnName) {
-        return tableStruct.getColumnType(columnName);
+//        List<String> columnList = insertStruct.getColumnList();
+//        if (rows.size() != columnList.size()) {
+//            System.out.println("解析异常");
+//        }
+//        List<String> columnType = new ArrayList<String>(columnList.size());
+//        for (int i = 0; i < rows.size(); i++) {
+//            for (int j = 0; j < columnList.size(); j++) {
+//                Column column = rows.get(i).getColumn(j);
+//                column.setName(columnList.get(j));
+//                column.setType(getColumnType(columnList.get(j)));
+//                column.setValue(decodeColunm(column.getValue(), column.getType()));
+//            }
+//        }
     }
 
     public Object decodeColunm(byte[] value, String type) {

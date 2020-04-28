@@ -1,12 +1,10 @@
 package com.sxd.oracle.analyse.domain;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import static com.sxd.oracle.analyse.PatternConstant.COLUMNS_TYPE_PATTERN;
-import static com.sxd.oracle.analyse.PatternConstant.TABLE_PATTERN;
+import static com.sxd.oracle.analyse.PatternConstant.*;
 
 /**
  * @author shixiaodong
@@ -20,7 +18,7 @@ public class TableStruct {
 
     private String tableName;
 
-    private Map<String, String> columns;
+    private Map<String, ColumnStruct> columns;
 
     public TableStruct(String statement) {
         this.statement = statement;
@@ -28,11 +26,26 @@ public class TableStruct {
         if (matcher.find()) {
             tableName = matcher.group(1);
         }
-        matcher = COLUMNS_TYPE_PATTERN.matcher(statement);
-        columns = new HashMap<String, String>();
-        while (matcher.find()) {
-            columns.put(matcher.group(1), matcher.group(2));
+        // 截取字段定义部分做下一阶段匹配
+        String columnScope = statement;
+        Matcher columnScopeMatcher = COLUMNS_SCOPE_PATTERN.matcher(statement);
+        if (columnScopeMatcher.find()) {
+            columnScope = columnScopeMatcher.group(2);
         }
+        matcher = COLUMNS_TYPE_PATTERN.matcher(columnScope);
+        columns = new LinkedHashMap<String, ColumnStruct>();
+        while (matcher.find()) {
+            String sizeStr = matcher.group(3);
+            int size = isInteger(sizeStr) ? Integer.parseInt(sizeStr) : 0;
+            ColumnStruct columnStruct = new ColumnStruct(matcher.group(1), matcher.group(2), size);
+            columns.put(matcher.group(1), columnStruct);
+        }
+
+        System.out.println("a");
+    }
+
+    public boolean isInteger(String str) {
+        return NUMBER_PATTERN.matcher(str).matches();
     }
 
     public String getStatement() {
@@ -43,33 +56,16 @@ public class TableStruct {
         return tableName;
     }
 
-    public Map<String, String> getColunmMap() {
-        return columns;
+    public int getColumnSize() {
+        return columns.keySet().size();
     }
 
-    public String getColumnType(String column) {
-        return columns.get(column);
+    public List<String> getColumnNames() {
+        return new ArrayList<String>(columns.keySet());
     }
 
-    public static byte[] getByteTime(String date) {
-        String[] timeString = date.split(" ");
-        int year = stringToInt(timeString[0]);
-        //年 2018 十六进制  7 E2   byte[] {7,-30 }
-        byte y1 = (byte) ((year >> 8) & 0xff);//年高八位
-        byte y2 = (byte) (year & 0xff);//年低八位
-        int month = stringToInt(timeString[1]);
-        int day = stringToInt(timeString[2]);
-        int hour = stringToInt(timeString[3]);
-        int minute = stringToInt(timeString[4]);
-        int second = stringToInt(timeString[5]);
-        int week = stringToInt(timeString[6]);
-        byte sum = (byte) ((y1 + y2 + month + day + hour + minute + second + week) & 0xff);//和校验位,可加可不加
-        byte[] today = { y1, y2, (byte) month, (byte) day, (byte) hour, (byte) minute, (byte) second, (byte) week, sum};
-        return today;
-    }
-
-    public static int stringToInt(String s) {
-        return Integer.parseInt(s);
+    public List<ColumnStruct> getColumnStruct() {
+        return new ArrayList<ColumnStruct>(columns.values());
     }
 
 }

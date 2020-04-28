@@ -93,4 +93,4 @@ buildNumber.properties
 # 自定义
 .idea
 *.iml
-
+**/**/resources/*.txt

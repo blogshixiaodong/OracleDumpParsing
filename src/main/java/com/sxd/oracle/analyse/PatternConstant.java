@@ -12,13 +12,14 @@ public class PatternConstant {
 
     public static Pattern TABLE_PATTERN = Pattern.compile("CREATE TABLE \"(\\w*)\"");
 
-    /**
-     * TODO: 会匹配到表明!!!
-     */
-    public static Pattern COLUMNS_TYPE_PATTERN = Pattern.compile("\"(\\w*)\"\\s{1}(\\w*)");
+    public static Pattern COLUMNS_SCOPE_PATTERN = Pattern.compile("CREATE TABLE \"(\\w*)\"\\s*(\\(.*\\)\\))");
+
+    public static Pattern COLUMNS_TYPE_PATTERN = Pattern.compile("\"(\\w*)\"\\s{1}(\\w*)\\s*\\(?(\\w*)\\)?");
 
     public static Pattern INSERT_PATTERN = Pattern.compile("INSERT INTO \"(\\w*)\"");
 
     public static Pattern COLUMNS_VALUE_PATTERN = Pattern.compile("\"(\\w*)\"\\s*[,|)]");
+
+    public static Pattern NUMBER_PATTERN = Pattern.compile("^[-\\+]?[\\d]+$");
 
 }

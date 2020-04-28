@@ -25,6 +25,8 @@ public class Main {
 
     public final static String FILE_PATH = "F:\\sxd_workspace\\analyse\\src\\main\\resources\\0420.dmp";
 
+    public final static String OUTPUT_FILE_PATH = "F:\\sxd_workspace\\analyse\\src\\main\\resources\\out.txt";
+
     public static List<String> createList = new ArrayList<String>();
 
     public static List<String> insertList = new ArrayList<String>();
@@ -95,12 +97,20 @@ public class Main {
         SqlExportHandler handler = new OracleExportHandler();
         Map<String, Table> tableMap = TableThreadLocal.get();
         Iterator<String> iterator = tableMap.keySet().iterator();
+        File f =  new File(OUTPUT_FILE_PATH);
+        FileWriter fileWriter = new FileWriter(f);
         while (iterator.hasNext()) {
             String next = iterator.next();
             Table table = tableMap.get(next);
             String s1 = handler.exportCreateTableStatement(table);
             System.out.println(s1);
+            fileWriter.write(s1);
+            String s2 = handler.exportInsertStatement(table);
+            System.out.println(s2);
+            fileWriter.write(s2);
+            fileWriter.flush();
         }
+        System.out.println("====== 导出SQL结束 ======");
     }
 
     private static String hexString = "0123456789ABCDEF";

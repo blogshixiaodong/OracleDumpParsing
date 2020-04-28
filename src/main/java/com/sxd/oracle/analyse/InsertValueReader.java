@@ -1,6 +1,7 @@
 package com.sxd.oracle.analyse;
 
 import com.sxd.oracle.analyse.domain.Column;
+import com.sxd.oracle.analyse.domain.ColumnStruct;
 import com.sxd.oracle.analyse.domain.Row;
 
 import java.io.IOException;
@@ -28,7 +29,10 @@ public class InsertValueReader {
 
     private List<Column> columns = new ArrayList<Column>();
 
+    private String tableName;
+
     public InsertValueReader(String tableName, RandomAccessFile file) {
+        this.tableName = tableName;
         this.file = file;
         rows = new ArrayList<Row>();
         next = 2;
@@ -42,7 +46,10 @@ public class InsertValueReader {
             }
             next = toInt(ctrl);
             byte[] value = readValueByte();
-            Column column = new Column(columns.size(), value);
+            int size = columns.size();
+            int s = TableThreadLocal.get(tableName).getTableStruct().getColumnStruct().size();
+            ColumnStruct columnStruct = TableThreadLocal.get(tableName).getTableStruct().getColumnStruct().get(size);
+            Column column = new Column(columnStruct, value);
             columns.add(column);
             next = 2;
         }
@@ -62,7 +69,9 @@ public class InsertValueReader {
         // NULL字段
         if (b[0] == -2 && b[1] == -1) {
             System.out.println("NULL");
-            Column column = new Column(columns.size(), b);
+            int size = columns.size();
+            ColumnStruct columnStruct = TableThreadLocal.get(tableName).getTableStruct().getColumnStruct().get(size);
+            Column column = new Column(columnStruct, b);
             columns.add(column);
             return readCtrlByte();
         }
