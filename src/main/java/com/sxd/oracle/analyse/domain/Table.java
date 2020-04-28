@@ -54,21 +54,6 @@ public class Table {
 
     public void setRows(List<Row> rows) {
         this.rows = rows;
-        // 设置数据后就开始解析
-        // 时间类型，BLOB类型
-//        List<String> columnList = insertStruct.getColumnList();
-//        if (rows.size() != columnList.size()) {
-//            System.out.println("解析异常");
-//        }
-//        List<String> columnType = new ArrayList<String>(columnList.size());
-//        for (int i = 0; i < rows.size(); i++) {
-//            for (int j = 0; j < columnList.size(); j++) {
-//                Column column = rows.get(i).getColumn(j);
-//                column.setName(columnList.get(j));
-//                column.setType(getColumnType(columnList.get(j)));
-//                column.setValue(decodeColunm(column.getValue(), column.getType()));
-//            }
-//        }
     }
 
     public Object decodeColunm(byte[] value, String type) {

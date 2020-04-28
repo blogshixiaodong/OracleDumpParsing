@@ -14,9 +14,20 @@ import static com.sxd.oracle.analyse.PatternConstant.*;
  */
 public class TableStruct {
 
+    /**
+     * 表定义语句
+     */
     private String statement;
 
+    /**
+     * 表名
+     */
     private String tableName;
+
+    /**
+     * 表空间定义
+     */
+    private TableSpace tableSpace;
 
     private Map<String, ColumnStruct> columns;
 
@@ -26,12 +37,16 @@ public class TableStruct {
         if (matcher.find()) {
             tableName = matcher.group(1);
         }
-        // 截取字段定义部分做下一阶段匹配
+        // 截取字段定义申明语句部分做下一阶段匹配
         String columnScope = statement;
         Matcher columnScopeMatcher = COLUMNS_SCOPE_PATTERN.matcher(statement);
         if (columnScopeMatcher.find()) {
             columnScope = columnScopeMatcher.group(2);
         }
+        // 截取表空间申明与语句
+        int tableSapceIndex = statement.indexOf(columnScope);
+        tableSpace = new TableSpace(statement.substring(tableSapceIndex + columnScope.length()).trim());
+
         matcher = COLUMNS_TYPE_PATTERN.matcher(columnScope);
         columns = new LinkedHashMap<String, ColumnStruct>();
         while (matcher.find()) {

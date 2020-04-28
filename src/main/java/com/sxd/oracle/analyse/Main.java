@@ -8,7 +8,6 @@ import com.sxd.oracle.analyse.handler.OracleExportHandler;
 import com.sxd.oracle.analyse.handler.SqlExportHandler;
 
 import java.io.*;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
