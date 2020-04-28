@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import static com.sxd.oracle.analyse.PatternConstant.COLUMNS_PATTERN;
+import static com.sxd.oracle.analyse.PatternConstant.COLUMNS_VALUE_PATTERN;
 import static com.sxd.oracle.analyse.PatternConstant.INSERT_PATTERN;
 
 /**
@@ -29,7 +29,7 @@ public class InsertStruct {
             tableName = matcher.group(1);
             break;
         }
-        matcher = COLUMNS_PATTERN.matcher(statement);
+        matcher = COLUMNS_VALUE_PATTERN.matcher(statement);
         while (matcher.find()) {
             columnNames.add(matcher.group(1));
         }

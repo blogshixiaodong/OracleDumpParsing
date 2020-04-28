@@ -1,13 +1,17 @@
 package com.sxd.oracle.analyse.domain;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
+import static com.sxd.oracle.analyse.PatternConstant.COLUMNS_TYPE_PATTERN;
 import static com.sxd.oracle.analyse.PatternConstant.TABLE_PATTERN;
 
 /**
  * @author shixiaodong
  * @version 1.0.0
- * @Description TODO
+ * @Description 表定义结构体
  * @createTime 2020年04月21日 14:33:00
  */
 public class TableStruct {
@@ -16,12 +20,18 @@ public class TableStruct {
 
     private String tableName;
 
+    private Map<String, String> columns;
+
     public TableStruct(String statement) {
         this.statement = statement;
         Matcher matcher = TABLE_PATTERN.matcher(statement);
-        while (matcher.find()) {
+        if (matcher.find()) {
             tableName = matcher.group(1);
-            break;
+        }
+        matcher = COLUMNS_TYPE_PATTERN.matcher(statement);
+        columns = new HashMap<String, String>();
+        while (matcher.find()) {
+            columns.put(matcher.group(1), matcher.group(2));
         }
     }
 
@@ -31,6 +41,14 @@ public class TableStruct {
 
     public String getTableName() {
         return tableName;
+    }
+
+    public Map<String, String> getColunmMap() {
+        return columns;
+    }
+
+    public String getColumnType(String column) {
+        return columns.get(column);
     }
 
     public static byte[] getByteTime(String date) {

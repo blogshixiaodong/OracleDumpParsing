@@ -12,7 +12,9 @@ public class Column {
 
     private byte[] value;
 
-    private String decode;
+    private Object decode;
+
+    private String name;
 
     private String type;
 
@@ -33,12 +35,20 @@ public class Column {
         this.value = value;
     }
 
-    public String getDecode() {
+    public Object getDecode() {
         return decode;
     }
 
-    public void setDecode(String decode) {
+    public void setDecode(Object decode) {
         this.decode = decode;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getType() {

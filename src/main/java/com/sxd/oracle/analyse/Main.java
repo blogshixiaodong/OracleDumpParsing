@@ -4,10 +4,15 @@ import com.sxd.oracle.analyse.domain.InsertStruct;
 import com.sxd.oracle.analyse.domain.Row;
 import com.sxd.oracle.analyse.domain.Table;
 import com.sxd.oracle.analyse.domain.TableStruct;
+import com.sxd.oracle.analyse.handler.OracleExportHandler;
+import com.sxd.oracle.analyse.handler.SqlExportHandler;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 /**
@@ -18,7 +23,7 @@ import java.util.regex.Matcher;
  */
 public class Main {
 
-    public final static String FILE_PATH = "F:\\sxd_workspace\\analyse\\src\\main\\resources\\0422.dmp";
+    public final static String FILE_PATH = "F:\\sxd_workspace\\analyse\\src\\main\\resources\\0420.dmp";
 
     public static List<String> createList = new ArrayList<String>();
 
@@ -85,6 +90,17 @@ public class Main {
             }
         }
         System.out.println(createList.size());
+
+        System.out.println("====== 开始导出SQL ======");
+        SqlExportHandler handler = new OracleExportHandler();
+        Map<String, Table> tableMap = TableThreadLocal.get();
+        Iterator<String> iterator = tableMap.keySet().iterator();
+        while (iterator.hasNext()) {
+            String next = iterator.next();
+            Table table = tableMap.get(next);
+            String s1 = handler.exportCreateTableStatement(table);
+            System.out.println(s1);
+        }
     }
 
     private static String hexString = "0123456789ABCDEF";

@@ -11,15 +11,23 @@ import java.io.UnsupportedEncodingException;
  * @Description TODO
  * @createTime 2020年04月20日 23:39:00
  */
-public class HexUtilsssss {
+public class HexUtils {
 
     public static void main(String[] args) throws UnsupportedEncodingException, InterruptedException, DecoderException {
-        String origin = "微网关平台";
-        String gb2312 = Hex.encodeHexString(origin.getBytes("GB2312"));
-        System.out.println(gb2312);
-        byte[] bytes = Hex.decodeHex(gb2312);
-        String ss = new String(bytes, "GB2312");
-        System.out.println(ss);
+//        String origin = "微网关平台";
+//        String gb2312 = Hex.encodeHexString(origin.getBytes("GB2312"));
+//        System.out.println(gb2312);
+//        byte[] bytes = Hex.decodeHex(gb2312);
+//        String ss = new String(bytes, "GB2312");
+//        System.out.println(ss);
+        byte[] b = new byte[] {58, -59, 42, -128};
+        System.out.println(toInt(b));
+
+        int a1=Integer.parseInt("3AC52A80",16);
+        int a2=Integer.parseInt("BB",16);
+        System.out.println(a1);
+        System.out.println(a2);
+        System.out.println(bytesToHexString(b));
 
     }
 
@@ -35,7 +43,7 @@ public class HexUtilsssss {
         return rr;
     }
 
-    private static String bytesToHexString(byte[] src) {
+    public static String bytesToHexString(byte[] src) {
         StringBuilder stringBuilder = new StringBuilder("");
         if (src == null || src.length <= 0) {
             return null;
@@ -75,4 +83,16 @@ public class HexUtilsssss {
     private static byte charToByte(char c) {
         return (byte) "0123456789ABCDEF".indexOf(c);
     }
+
+    public static int toInt(byte[] bytes){
+        int number = 0;
+        for(int i = 0; i < 4 ; i++){
+            number += bytes[i] << i*8;
+        }
+        return number;
+    }
+
 }
+
+// 986000
+// 986000000

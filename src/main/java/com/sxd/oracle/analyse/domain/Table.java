@@ -1,6 +1,12 @@
 package com.sxd.oracle.analyse.domain;
 
+import com.sxd.oracle.analyse.HexUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,9 +61,47 @@ public class Table {
             System.out.println("解析异常");
         }
         List<String> columnType = new ArrayList<String>(columnList.size());
-        for (int i = 0; i < columnList.size(); i++) {
-//            columnType.add()
+        for (int i = 0; i < rows.size(); i++) {
+            for (int j = 0; j < columnList.size(); j++) {
+                Column column = rows.get(i).getColumn(j);
+                column.setName(columnList.get(j));
+                column.setType(getColumnType(columnList.get(j)));
+                column.setDecode(decodeColunm(column.getValue(), column.getType()));
+            }
         }
+    }
+
+    public String getColumnType(String columnName) {
+        return tableStruct.getColumnType(columnName);
+    }
+
+    public Object decodeColunm(byte[] value, String type) {
+        String decode = "";
+        if (value[0] == -2 && value[1] == -1) {
+            decode = null;
+        } else if ("TIMESTAMP".equals(type)) {
+            int century = value[0] - 100;
+            int year = value[1] - 100;
+            int month = value[2] - 1;
+            int day = value[3];
+            int hour = value[4] - 1;
+            int minute = value[5] - 1;
+            int second = value[6] - 1;
+            byte[] bytes = Arrays.copyOfRange(value, 7, 11);
+            String hexStr = HexUtils.bytesToHexString(bytes);
+            int milliSecond = Integer.parseInt(hexStr, 16) / 1000 / 1000;
+            decode = "TIMESTAMP";
+            Date date = new Date(century * 100 + year - 1900, month, day, hour, minute, second);
+            Timestamp timestamp = new Timestamp(date.getTime() + milliSecond);
+            return timestamp;
+        } else if (type.contains("CHAR")) {
+            try {
+                decode = new String(value, "GB2312");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return decode;
     }
 
     public static void main(String[] args) {

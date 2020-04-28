@@ -25,5 +25,13 @@ public class Row {
         columnList.addAll(columns);
     }
 
+    public List<Column> getColumnList() {
+        return columnList;
+    }
+
+    public Column getColumn(int index) {
+        return columnList.get(index);
+    }
+
 
 }
