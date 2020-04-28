@@ -1,5 +1,6 @@
 package com.sxd.oracle.analyse.domain;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -42,7 +43,13 @@ public class TableSpace {
         String tmpTableSpaceStatement = statement.replace(storageStatement, "");
 
         tmpTableSpaceStatement = tmpTableSpaceStatement.replace("  ", " ").trim();
-        String[] split = tmpTableSpaceStatement.split(" ");
+        String[] tmpSplit = tmpTableSpaceStatement.split(" ");
+        String[] split = tmpSplit;
+        // 格式: key value key value, 长度因为偶数，避免数组越界
+        if (tmpSplit.length % 2 != 0) {
+            split = new String[tmpSplit.length + 1];
+            System.arraycopy(tmpSplit, 0, split, 0, tmpSplit.length);
+        }
         for (int i = 0; i < split.length; i = i + 2) {
             if (split[i].equals("PCTFREE")) {
                 this.pctfree = Integer.parseInt(split[i + 1]);;

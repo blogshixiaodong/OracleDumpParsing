@@ -45,5 +45,9 @@ public class PatternConstant {
      */
     public static Pattern STORAGE_SCOPE_PATTERN = Pattern.compile("STORAGE\\((.*)\\)");
 
+    public static Pattern INDEX_PATTERN = Pattern.compile("CREATE UNIQUE INDEX \"(.*)\" ON \"(.*)\" \\((.*)\\)");
+    //Pattern.compile("CREATE UNIQUE INDEX .* ON\\s?\"\\w*\"\\s?\\((.*)\\s?\\) ");
+
+
 
 }

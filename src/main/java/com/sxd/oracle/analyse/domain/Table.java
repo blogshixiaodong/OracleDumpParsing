@@ -27,6 +27,8 @@ public class Table {
      */
     private InsertStruct insertStruct;
 
+    private List<IndexStruct> indexStructs;
+
     /**
      * 行数据
      */
@@ -46,6 +48,21 @@ public class Table {
 
     public void setInsertStruct(InsertStruct insertStruct) {
         this.insertStruct = insertStruct;
+    }
+
+    public List<IndexStruct> getIndexStructs() {
+        return indexStructs;
+    }
+
+    public void setIndexStructs(List<IndexStruct> indexStructs) {
+        this.indexStructs = indexStructs;
+    }
+
+    public void addIndexStruct(IndexStruct indexStruct) {
+        if (indexStructs == null) {
+            indexStructs = new ArrayList<IndexStruct>();
+        }
+        indexStructs.add(indexStruct);
     }
 
     public List<Row> getRows() {

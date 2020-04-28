@@ -1,7 +1,5 @@
 package com.sxd.oracle.analyse.domain;
 
-import java.io.UnsupportedEncodingException;
-
 /**
  * @author shixiaodong
  * @version 1.0.0

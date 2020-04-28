@@ -17,7 +17,12 @@ public class TableThreadLocal {
     private static ThreadLocal<Map<String, Table>> threadLocal = new ThreadLocal<Map<String, Table>>();
 
     public static Table get(String tableName) {
-        return threadLocal.get().get(tableName);
+        Map<String, Table> tableMap = threadLocal.get();
+        if (tableMap == null) {
+            tableMap = new HashMap<String, Table>();
+            threadLocal.set(tableMap);
+        }
+        return tableMap.get(tableName);
     }
 
     public static List<String> getTableColumns(String tableName) {

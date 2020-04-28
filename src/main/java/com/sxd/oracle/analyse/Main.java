@@ -1,9 +1,6 @@
 package com.sxd.oracle.analyse;
 
-import com.sxd.oracle.analyse.domain.InsertStruct;
-import com.sxd.oracle.analyse.domain.Row;
-import com.sxd.oracle.analyse.domain.Table;
-import com.sxd.oracle.analyse.domain.TableStruct;
+import com.sxd.oracle.analyse.domain.*;
 import com.sxd.oracle.analyse.handler.OracleExportHandler;
 import com.sxd.oracle.analyse.handler.SqlExportHandler;
 
@@ -45,10 +42,13 @@ public class Main {
                 Matcher matcher = PatternConstant.TABLE_PATTERN.matcher(s);
                 if (matcher.find()) {
                     String tableName = matcher.group(1);
-                    Table table = new Table();
+                    Table table = TableThreadLocal.get(tableName);
+                    if (table == null) {
+                        table = new Table();
+                        TableThreadLocal.put(tableName, table);
+                    }
                     TableStruct tableStruct = new TableStruct(s);
                     table.setTableStruct(tableStruct);
-                    TableThreadLocal.put(tableName, table);
                 }
                 createList.add(s);
                 continue;
@@ -84,6 +84,13 @@ public class Main {
             boolean isUniqueIndex = s.contains("CREATE UNIQUE INDEX");
             if (isUniqueIndex) {
                 createUniqueIndex.add(s);
+                IndexStruct indexStruct = new IndexStruct(s);
+                Table table = TableThreadLocal.get(indexStruct.getTableName());
+                if (table == null) {
+                    table = new Table();
+                    TableThreadLocal.put(indexStruct.getTableName(), table);
+                }
+                table.addIndexStruct(indexStruct);
             }
             boolean isCommentOn = s.contains("COMMENT ON");
             if (isCommentOn) {

@@ -45,7 +45,13 @@ public class Storage {
         this.statement = storageStatement;
         String tmpStorageStatement = storageStatement.trim().replace("STORAGE", "").replace("(", "").replace(")", "");
         tmpStorageStatement = tmpStorageStatement.replace("FREELIST GROUPS", "FREELIST_GROUPS");
-        String[] split = tmpStorageStatement.split(" ");
+        String[] tmpSplit = tmpStorageStatement.split(" ");
+        String[] split = tmpSplit;
+        // 格式: key value key value, 长度因为偶数，避免数组越界
+        if (tmpSplit.length % 2 != 0) {
+            split = new String[tmpSplit.length + 1];
+            System.arraycopy(tmpSplit, 0, split, 0, tmpSplit.length);
+        }
         for (int i = 0; i < split.length; i = i + 2) {
             if (split[i].equals("INITIAL")) {
                 this.initial = Integer.parseInt(split[i + 1]);;
